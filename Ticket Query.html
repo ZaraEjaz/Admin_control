@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mortha"> -->
+    <!-- <link href="./vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet"> -->
+    <!-- <link href="./vendor/chartist/css/chartist.min.css" rel="stylesheet"> -->
+    <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5916181059.js" crossorigin="anonymous"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <script>
+       
+    </script>
+    <style>
+        body{
+            color:black;
+        }
+       .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -800px; /* Start hidden */
+            width: 50%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 999;
+            padding: 20px;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(40, 38, 38, 0.5); /* semi-transparent black background */
+            z-index: 998; /* Below the panel */
+        }
+       .bg-theme{
+        background-image: linear-gradient(145deg, rgba(254, 254, 254, 0.05) 0%, rgba(254, 254, 254, 0.05) 69%,rgba(160, 160, 160, 0.05) 69%, rgba(160, 160, 160, 0.05) 100%),linear-gradient(283deg, rgba(102, 102, 102, 0.02) 0%, rgba(102, 102, 102, 0.02) 60%,rgba(67, 67, 67, 0.02) 60%, rgba(67, 67, 67, 0.02) 100%),linear-gradient(165deg, rgba(169, 169, 169, 0.06) 0%, rgba(169, 169, 169, 0.06) 89%,rgba(189, 189, 189, 0.06) 89%, rgba(189, 189, 189, 0.06) 100%),linear-gradient(415deg, rgba(213, 213, 213, 0.04) 0%, rgba(213, 213, 213, 0.04) 45%,rgba(66, 66, 66, 0.04) 45%, rgba(66, 66, 66, 0.04) 100%),linear-gradient(272deg, rgba(223, 223, 223, 0.01) 0%, rgba(223, 223, 223, 0.01) 82%,rgba(28, 28, 28, 0.01) 82%, rgba(28, 28, 28, 0.01) 100%),linear-gradient(92deg, rgba(20, 20, 20, 0.06) 0%, rgba(20, 20, 20, 0.06) 62%,rgba(136, 136, 136, 0.06) 62%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(289deg, rgba(206, 206, 206, 0.09) 0%, rgba(206, 206, 206, 0.09) 58%,rgba(6, 6, 6, 0.09) 58%, rgba(6, 6, 6, 0.09) 100%),linear-gradient(393deg, rgba(162, 162, 162, 0.07) 0%, rgba(162, 162, 162, 0.07) 27%,rgba(24, 24, 24, 0.07) 27%, rgba(24, 24, 24, 0.07) 100%),linear-gradient(275deg, rgba(166, 166, 166, 0.04) 0%, rgba(166, 166, 166, 0.04) 5%,rgba(210, 210, 210, 0.04) 5%, rgba(210, 210, 210, 0.04) 100%),linear-gradient(179deg, rgb(26,60,118),rgb(32,129,207),rgb(7,128,191));
+
+       }
+       #icon{
+        font-size: 20px;
+        margin: 0 auto;
+        transition: transform 0.5s ease;
+       }
+       #icon:hover{
+        color:black;
+        transform: scale(1.2);
+       }
+       .thead{
+        background-color: #4e8aba!important;
+        color: white;
+       }
+       tbody{
+        color:black;
+       }
+       @media (max-width: 768px) {
+    /* Styles for smartphones (portrait) */
+    .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(129, 54, 54, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: scroll;
+        }
+        }
+    </style>
+</head>
+<body>
+        <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row special-page-titles page-titles mx-0" >
+                    <div class="col-sm-6 p-md-0 ">
+                        <div class="welcome-text ">
+                            <h4 class="text-white">Ticket Query</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-2" style="align-items:end;">
+                                        <label for="ticket_number">Ticket Number</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" name="ticket_number" id="ticket_number">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="button" class="btn btn-theme">Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-2">
+                                            <label for="from_date">From Date</label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="date" class="form-control" name="from_date">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label for="To_date">To Date</label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="text" class="form-control" name="service_date" id="To_date" placeholder="mm/dd/yyyy">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-2">
+                                            <label for="ticket_number">Ticket Number</label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="text" class="form-control" name="ticket_number" id="ticket_number">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label for="service_date">Invoice</label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="text" class="form-control" name="ticket_number" id="ticket_number">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-2">
+                                            <label for="status">PNR</label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <input type="text" class="form-control" name="status" id="status">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12 text-center">
+                                            <button type="button" class="btn btn-theme">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <table class="table mt-5">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope="col">T.R.A.V.E.L</th>
+                                            <th scope="col">Invoice Number</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Ticket Voucher</th>
+                                            <th scope="col">Pax Name</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Branch</th>
+                                            <th scope="col">Customer</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>TR001</td>
+                                            <td>INV001</td>
+                                            <td>Product A</td>
+                                            <td>TV001</td>
+                                            <td>John Doe</td>
+                                            <td>Confirmed</td>
+                                            <td>12/12/2024</td>
+                                            <td>Branch A</td>
+                                            <td>Customer A</td>
+                                            <td>$1000</td>
+                                            <td><button type="button"  class="btn btn-theme">Edit</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>TR002</td>
+                                            <td>INV002</td>
+                                            <td>Product B</td>
+                                            <td>TV002</td>
+                                            <td>Jane Smith</td>
+                                            <td>Pending</td>
+                                            <td>12/13/2024</td>
+                                            <td>Branch B</td>
+                                            <td>Customer B</td>
+                                            <td>$2000</td>
+                                            <td><button type="button" class="btn btn-theme">Edit</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>        
+            </div>
+        </div>
+        <script>
+            document.querySelector('#selectAll').addEventListener('change', function(e) {
+                const checkboxes = document.querySelectorAll('.row-checkbox');
+                checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+    // Define the options
+    const options = [
+        "A00220-khalid siddique",
+        "A00136-Zafar Khan",
+    ];
+
+    // Function to populate options
+    function populateOptions(selectElement) {
+        selectElement.innerHTML = '<option>Select</option>'; // Reset options
+        options.forEach(function(option) {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.innerHTML = option;
+            selectElement.appendChild(opt);
+        });
+    }
+
+    // Get all the account-head select elements
+    const accountHeadSelects = document.querySelectorAll('.account-head');
+
+    // Add event listeners to each select element
+    accountHeadSelects.forEach(function(select) {
+        select.addEventListener('click', function() {
+            if (select.options.length === 1) { // Only populate if not already populated
+                populateOptions(select);
+            }
+        });
+    });
+});
+
+        </script>
+        
+        <!--**********************************
+            Content body end
+        ***********************************-->
+ 
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        
+
+        <!--**********************************
+            Footer end
+
+
+    </div>
+  
+        Main wrapper end
+    ***********************************-->
+
+
+       
+
+
+        
+    <script src="../vendor/global/global.min.js"></script>
+    <script src="../js/quixnav-init.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+    <!-- <script src="./vendor/chartist/js/chartist.min.js"></script> -->
+
+    <script src="../vendor/moment/moment.min.js"></script>
+    <!-- <script src="./vendor/pg-calendar/js/pignose.calendar.min.js"></script> -->
+
+    <script src="../sc.js"></script>
+    <script src="../js/dashboard/dashboard-2.js"></script>
+    <!-- Datatable -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script> 
+    <script src="../js/plugins-init/datatables.init.js"></script>
+    <!-- <script src="./js/sc.js"></script>-->
+
+
+    
+</body>
+</html>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mortha"> -->
+    <!-- <link href="./vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet"> -->
+    <!-- <link href="./vendor/chartist/css/chartist.min.css" rel="stylesheet"> -->
+    <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5916181059.js" crossorigin="anonymous"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <script>
+       
+    </script>
+    <style>
+        body{
+            color:rgb(0, 0, 0);
+        }
+       .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -800px; /* Start hidden */
+            width: 50%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 999;
+            padding: 20px;
+            overflow-y: auto;
+}
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(40, 38, 38, 0.5); /* semi-transparent black background */
+            z-index: 998; /* Below the panel */
+        }
+       .bg-theme{
+        background-image: linear-gradient(145deg, rgba(254, 254, 254, 0.05) 0%, rgba(254, 254, 254, 0.05) 69%,rgba(160, 160, 160, 0.05) 69%, rgba(160, 160, 160, 0.05) 100%),linear-gradient(283deg, rgba(102, 102, 102, 0.02) 0%, rgba(102, 102, 102, 0.02) 60%,rgba(67, 67, 67, 0.02) 60%, rgba(67, 67, 67, 0.02) 100%),linear-gradient(165deg, rgba(169, 169, 169, 0.06) 0%, rgba(169, 169, 169, 0.06) 89%,rgba(189, 189, 189, 0.06) 89%, rgba(189, 189, 189, 0.06) 100%),linear-gradient(415deg, rgba(213, 213, 213, 0.04) 0%, rgba(213, 213, 213, 0.04) 45%,rgba(66, 66, 66, 0.04) 45%, rgba(66, 66, 66, 0.04) 100%),linear-gradient(272deg, rgba(223, 223, 223, 0.01) 0%, rgba(223, 223, 223, 0.01) 82%,rgba(28, 28, 28, 0.01) 82%, rgba(28, 28, 28, 0.01) 100%),linear-gradient(92deg, rgba(20, 20, 20, 0.06) 0%, rgba(20, 20, 20, 0.06) 62%,rgba(136, 136, 136, 0.06) 62%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(289deg, rgba(206, 206, 206, 0.09) 0%, rgba(206, 206, 206, 0.09) 58%,rgba(6, 6, 6, 0.09) 58%, rgba(6, 6, 6, 0.09) 100%),linear-gradient(393deg, rgba(162, 162, 162, 0.07) 0%, rgba(162, 162, 162, 0.07) 27%,rgba(24, 24, 24, 0.07) 27%, rgba(24, 24, 24, 0.07) 100%),linear-gradient(275deg, rgba(166, 166, 166, 0.04) 0%, rgba(166, 166, 166, 0.04) 5%,rgba(210, 210, 210, 0.04) 5%, rgba(210, 210, 210, 0.04) 100%),linear-gradient(179deg, rgb(26,60,118),rgb(32,129,207),rgb(7,128,191));
+
+       }
+       #icon{
+        font-size: 20px;
+        margin: 0 auto;
+        transition: transform 0.5s ease;
+       }
+       #icon:hover{
+        color:black;
+        transform: scale(1.2);
+       }
+       
+       @media (max-width: 768px) {
+    /* Styles for smartphones (portrait) */
+    .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(129, 54, 54, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: scroll;
+        }
+        }
+    </style>
+</head>
+<body>
+        <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row special-page-titles page-titles mx-0" >
+                    <div class="col-sm-6 p-md-0 " >
+                        <div class="welcome-text " >
+                            <h4 class="text-white" >Agent MANAGEMENT</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-head">
+                                <button class="btn btn-theme" style="float: right;margin: 10px;" onclick="addingpanel()">Add Agent</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example" class="table table-responsive-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>SNO.</th>
+                                                <th>NAME</th>
+                                                <th>AGENT ID/ACC</th>
+                                                <th>STAFF</th>
+                                                <th>REMARKS</th>
+                                                <th>BRANCH</th>
+                                                <th>GDS</th>
+                                                <th style="text-align: center;">VIEW</th>
+                                                <th style="text-align: center;">EDIT</th>
+                                                <th style="text-align: center;">DELETE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; color: black">1</th>
+                                                <td style="text-align: center; color: black">Omaair </th>
+                                                <td style="text-align: center; color: black">30</td>
+                                                <td style="text-align: center; color: black">******</td>
+                                                <td style="text-align: center; color: black">Admin</td>
+                                                <td style="text-align: center; color: black">Active</td>
+                                                <td style="text-align: center; color: black"> </td>
+                                                <td style="text-align: center; color: black"><i id="icon" class="fa-solid fa-eye view" data-pass="12345"></i></td>
+                                                <td style="text-align: center; color: black"><i id="icon" class="fa-solid fa-file-pen update" data-code="30"  data-name="omair"   data-authority="Admin" data-region="Saudi Arabia" data-status="active"  data-email="momaieuu@gmail.com" data-pass="12345"></i></td>
+                                                <td style="text-align: center; color: black"><i id="icon" class="fa-solid fa-trash " ></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+ 
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        
+
+        <!--**********************************
+            Footer end
+        ***********************************-->
+ <!-- ******************************************
+             Update Modal start
+        ***************************************** -->
+        <!-- ***************************************** -->
+<!-- Update Agent Modal -->
+<div class="slide-out-panel" id="updatingPanel">
+    <div class="slide-out-panel-header">
+        <i class="fa-solid fa-xmark" id="icon" onclick="ClosePanel()" style="margin-bottom: 10px"></i>
+    </div>
+    <h4 class="card-title">UPDATE AGENT</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div class="form-validation">
+                    <form class="form-valid" action="#" method="post">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Agent Name</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="agentName" value="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Agent Id</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="agentId" value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Remarks</label>
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="remarks" value="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Branch</label>
+                            <div class="col-lg-8">
+                                <select class="js-select2 form-control" name="branch" style="width: 100%;">
+                                    <option disabled selected hidden>Select...</option>
+                                    <option value="Makkah">Makkah</option>
+                                    <option value="Skab center">SKAB Center</option>
+                                    <option value="Madina">Madinah</option>
+                                    <option value="Riyadh">Riyadh</option>
+                                    <option value="Dubai">Dubai</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Account</label>
+                            <div class="col-lg-8">
+                                <select class="js-select2 form-control" name="account" style="width: 100%;">
+                                    <option disabled selected hidden>Select...</option>
+                                    <option value="A00136-Zafar Khan">A00136-Zafar Khan</option>
+                                    <option value="A00220-FALCON CITY TRAVEL -DUBAI">A00220-FALCON CITY TRAVEL -DUBAI</option>
+                                    <!-- Add remaining options here -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Service Charge</label>
+                            <div class="col-lg-8">
+                                <input type="number" class="form-control" name="serviceCharge" step="0.001" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Void Charges</label>
+                            <div class="col-lg-8">
+                                <input type="number" class="form-control" name="voidCharges" step="0.001" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Staff</label>
+                            <div class="col-lg-8">
+                                <input type="checkbox" name="staff">
+                            </div>
+                        </div>
+
+                        <div class="dealbox">
+                            <label class="del">Deal Wise Service Charges</label>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 1" name="deal1" id="deal1name" onchange="validateInput(1, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal1" name="amt1" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 2" name="deal2" id="deal2name" onchange="validateInput(2, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal2" name="amt2" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 3" name="deal3" id="deal3name" onchange="validateInput(3, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal3" name="amt3" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 4" name="deal4" id="deal4name" onchange="validateInput(4, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal4" name="amt4" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 5" name="deal5" id="deal5name" onchange="validateInput(5, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal5" name="amt5" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 6" name="deal6" id="deal6name" onchange="validateInput(6, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal6" name="amt6" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 7" name="deal7" id="deal7name" onchange="validateInput(7, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal7" name="amt7" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" placeholder="deal code 8" name="deal8" id="deal8name" onchange="validateInput(8, this)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" step="0.001" class="form-control" id="deal8" name="amt8" placeholder="service charge" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-5">
+                            <div class="col-lg-8 ml-auto">
+                                <button type="submit" class="btn btn-theme">Update</button>
+                            </div>
+                        </div>
+                        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ******************************************
+Update Agent Modal end -->
+
+    <div id="overlay"></div>
+        <!-- ******************************************
+        update Modal end
+        ***************************************** -->
+         <!-- ******************************************
+        create Modal 
+        ***************************************** -->
+        <div class="slide-out-panel" id="addingPanel">
+            <div class="slide-out-panel-header">
+                <i class="fa-solid fa-xmark " id="icon" onclick="ClosePanel()" style="margin-bottom: 10px"></i>
+            </div>
+            <h4 class="card-title">ADD AGENT</h4>
+            <div class="row">
+                <div class="col-lg-12">
+                        <div class="card-body">
+                            <div class="form-validation">
+                                <form class="form-valid" action="#" method="post">
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Agent Name</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Agent Id</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Remarks</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" name="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" >Branch</label>
+                                        <div class="col-lg-8">
+                                            <select class="js-select2 form-control" name="" style="width: 100%;"  >
+                                                <option  disbled selected hidden>Select...</option>
+                                                <option value="Makkah">Makkah</option>
+                                                <option value="Skab center">SKAB Center</option>
+                                                <option value="Madina">Madinah</option>
+                                                <option value="Riyadh">Riyadh</option>
+                                                <option value="Dubai">Dubai</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Account</label>
+                                        <div class="col-lg-8">
+                                            <select class="js-select2 form-control" name="" style="width: 100%;">
+                                                <option disabled selected hidden>Select...</option>
+                                                <option value="A00136-Zafar Khan">A00136-Zafar Khan</option>
+                                                <option value="A00220-FALCON CITY TRAVEL -DUBAI">A00220-FALCON CITY TRAVEL -DUBAI</option>
+                                                <option value="A0013-AJWA AFAQ TRAVEL ALGHOUSE">A0013-AJWA AFAQ TRAVEL ALGHOUSE</option>
+                                                <option value="AAAS-AAAS TRAVEL & TOURISM">AAAS-AAAS TRAVEL & TOURISM</option>
+                                                <option value="DEER001-GOLDEN DEER TRAVEL-AZIZIA">DEER001-GOLDEN DEER TRAVEL-AZIZIA</option>
+                                                <option value="A0089-ZUBAIR MADINAH">A0089-ZUBAIR MADINAH</option>
+                                                <option value="A005-ALI BHATTI">A005-ALI BHATTI</option>
+                                                <option value="A0064-FAISAL REHMAN">A0064-FAISAL REHMAN</option>
+                                                <option value="A0011-FIFA BILAL">A0011-FIFA BILAL</option>
+                                                <option value="A0014-ATM TRAVEL">A0014-ATM TRAVEL</option>
+                                                <option value="A00140-ABDUL MOIZ RAWASIA">A00140-ABDUL MOIZ RAWASIA</option>
+                                                <option value="A0016-وكالة فاست بلس للشحن الجوي">A0016-وكالة فاست بلس للشحن الجوي</option>
+                                                <option value="A0020-IQBAL KHAN">A0020-IQBAL KHAN</option>
+                                                <option value="A0021-ROYAL TRAVEL-MUSHRIFAH">A0021-ROYAL TRAVEL-MUSHRIFAH</option>
+                                                <option value="A0027-HOLIDAY TRAVEL">A0027-HOLIDAY TRAVEL</option>
+                                                <option value="A0048-Grace Link Travel & Tourism, Lisc 73100186">A0048-Grace Link Travel & Tourism, Lisc 73100186</option>
+                                                <option value="A0028-WAZIR CARGO -AZIZIA">A0028-WAZIR CARGO -AZIZIA</option>
+                                                <option value="A0036-KASHIF MUGHAL">A0036-KASHIF MUGHAL</option>
+                                                <option value="A0037-PARADISE TRAVEL P-80">A0037-PARADISE TRAVEL P-80</option>
+                                                <option value="A0038-REHLA ETIMAD TRAVEL & TOURISM">A0038-REHLA ETIMAD TRAVEL & TOURISM</option>
+                                                <option value="A0052-ALWASEL CARGO-AZIZIA">A0052-ALWASEL CARGO-AZIZIA</option>
+                                                <option value="A0056-AMJAAD AIR SERVICE-KHUMRA">A0056-AMJAAD AIR SERVICE-KHUMRA</option>
+                                                <option value="A0058-USMAN HABIB MUGHAL">A0058-USMAN HABIB MUGHAL</option>
+                                                <option value="A0060-AL HARBI TRAVEL (MAZHAR)">A0060-AL HARBI TRAVEL (MAZHAR)</option>
+                                                <option value="A0082-UMER SIDDIQUE">A0082-UMER SIDDIQUE</option>
+                                                <option value="A0084-GOLDEN AIR TRAVEL-TIF">A0084-GOLDEN AIR TRAVEL-TIF</option>
+                                                <option value="A0085-SHUAA AL ABDAN-HO">A0085-SHUAA AL ABDAN-HO</option>
+                                                <option value="A009-MAK & MED TRAVEL JED(M&M)">A009-MAK & MED TRAVEL JED(M&M)</option>
+                                                <option value="A0093-QUALITY DESTINATION(QD)">A0093-QUALITY DESTINATION(QD)</option>
+                                                <option value="A0065-SYED HUSSAIN">A0065-SYED HUSSAIN</option>
+                                                <option value="A0030-FIFA-ABU BAKER - RUH">A0030-FIFA-ABU BAKER - RUH</option>
+                                                <option value="A004-DANYAL IJAZ-STAFF">A004-DANYAL IJAZ-STAFF</option>
+                                                <option value="A0062-ZAIN QASIN-STAFF MED">A0062-ZAIN QASIN-STAFF MED</option>
+                                                <option value="A003-QADEER KHAN-MAK">A003-QADEER KHAN-MAK</option>
+                                                <option value="A00199-IJAZ YOUSUF-MAK">A00199-IJAZ YOUSUF-MAK</option>
+                                                <option value="A0076-PURNA-WORL TRAVEL 1 PURNA-RIYADH">A0076-PURNA-WORL TRAVEL 1 PURNA-RIYADH</option>
+                                                <option value="A0074-MANSOOR TRAVEL PVT-RUH">A0074-MANSOOR TRAVEL PVT-RUH</option>
+                                                <option value="A0081-SURAJ PAHTAK SUN SHINE TR">A0081-SURAJ PAHTAK SUN SHINE TR</option>
+                                                <option value="A0078-BINNAY MISHRA SUN SHINE TRAVEL">A0078-BINNAY MISHRA SUN SHINE TRAVEL</option>
+                                                <option value="A0087-KAMAL SHAHI">A0087-KAMAL SHAHI</option>
+                                                <option value="A00203-WORLD TRAVEL 2">A00203-WORLD TRAVEL 2</option>
+                                                <option value="A00208-DIAMOND PLANE TRAVEL">A00208-DIAMOND PLANE TRAVEL</option>
+                                                <option value="A00221-FIFA - ZAIN UL ABEDEN">A00221-FIFA - ZAIN UL ABEDEN</option>
+                                                <option value="A00223-SANJIT TAMANG NEPAL ROSE TRAVEL">A00223-SANJIT TAMANG NEPAL ROSE TRAVEL</option>
+                                                <option value="A0041-FAIZ TRAVEL">A0041-FAIZ TRAVEL</option>
+                                                <option value="A00126-WASEEM MADINAH">A00126-WASEEM MADINAH</option>
+                                                <option value="A00128-BILAL YAMIN">A00128-BILAL YAMIN</option>
+                                                <option value="A0018-ARIF KHAN">A0018-ARIF KHAN</option>
+                                                <option value="A0046-MOAZZAM ALI">A0046-MOAZZAM ALI</option>
+                                                <option value="A0088-Location Travel & Tourism">A0088-Location Travel & Tourism</option>
+                                                <option value="A0090-AIR SERVICES">A0090-AIR SERVICES</option>
+                                                <option value="A0092-MIZAN TRAVEL MADINAH">A0092-MIZAN TRAVEL MADINAH</option>
+                                                <option value="A0010-HAMMAD AFZAL">A0010-HAMMAD AFZAL</option>
+                                                <option value="A0019-PINK BIRD TRAVEL MAKKAH">A0019-PINK BIRD TRAVEL MAKKAH</option>
+                                                <option value="A0029-AL REHMAN TRAVEL HAMDANIA">A0029-AL REHMAN TRAVEL HAMDANIA</option>
+                                                <option value="A00204-SAJJAD HUSSAIN- HAMDANIA">A00204-SAJJAD HUSSAIN- HAMDANIA</option>
+                                                <option value="A0039-LIAQAT HUSSAIN - HAMDANIA">A0039-LIAQAT HUSSAIN - HAMDANIA</option>
+                                                <option value="A0049-HAFIZ BABAR-HAMDANIA">A0049-HAFIZ BABAR-HAMDANIA</option>
+                                                <option value="A0050-SHAHZAD YOUNAS">A0050-SHAHZAD YOUNAS</option>
+                                                <option value="A0091-AMIR AZIZ - ABHA">A0091-AMIR AZIZ - ABHA</option>
+                                                <option value="A00137-LORD HOLIDAYS">A00137-LORD HOLIDAYS</option>
+                                                <option value="A00139-ABDUL QUDDUS - TABUK">A00139-ABDUL QUDDUS - TABUK</option>
+                                                <option value="A00210-GULF TRAVEL">A00210-GULF TRAVEL</option>
+                                                <option value="A00212-JUNAID SALEEM">A00212-JUNAID SALEEM</option>
+                                                <option value="A00217-BERMA TRAVEL-NEW">A00217-BERMA TRAVEL-NEW</option>
+                                                <option value="A00219-KAMIL TRAVEL">A00219-KAMIL TRAVEL</option>
+                                                <option value="A00222-HANI ALI MAKKAH">A00222-HANI ALI MAKKAH</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Service Charge</label>
+                                        <div class="col-lg-8">
+                                            <input type="number" class="form-control" name="service-charge" step="0.001" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Void Charges</label>
+                                        <div class="col-lg-8">
+                                            <input type="number" class="form-control" name="service-charge" step="0.001" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label">Staff</label>
+                                        <div class="col-lg-8">
+                                            <input type="checkbox" name="staff">
+                                        </div>
+                                    </div>
+
+                                    <div class="dealbox">
+                                        <label class="del">Deal Wise Service Charges</label>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 1" name="deal1" id="deal1name" onchange="validateInput(1, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal1" name="amt1" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 2" name="deal2" id="deal2name" onchange="validateInput(2, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal2" name="amt2" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 3" name="deal3" id="deal3name" onchange="validateInput(3, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal3" name="amt3" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 4" name="deal4" id="deal4name" onchange="validateInput(4, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal4" name="amt4" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 5" name="deal5" id="deal5name" onchange="validateInput(5, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal5" name="amt5" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 6" name="deal6" id="deal6name" onchange="validateInput(6, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal6" name="amt6" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 7" name="deal7" id="deal7name" onchange="validateInput(7, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal7" name="amt7" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-6">
+                                                <input type="text" class="form-control" placeholder="deal code 8" name="deal8" id="deal8name" onchange="validateInput(8, this)">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" step="0.001" class="form-control" id="deal8" name="amt8" placeholder="service charge" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-5">
+                                        <div class="col-lg-8 ml-auto">
+                                            <button type="submit" class="btn btn-theme">Add</button>
+                                        </div>
+                                    </div>
+                                    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                                
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+         <!-- ******************************************
+        Create Modal end
+        ***************************************** -->
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+
+       
+
+
+        
+    <script src="../vendor/global/global.min.js"></script>
+    <script src="../js/quixnav-init.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+    <!-- <script src="./vendor/chartist/js/chartist.min.js"></script> -->
+
+    <script src="../vendor/moment/moment.min.js"></script>
+    <!-- <script src="./vendor/pg-calendar/js/pignose.calendar.min.js"></script> -->
+
+    <script src="../sc.js"></script>
+    <script src="../js/dashboard/dashboard-2.js"></script>
+    <!-- Datatable -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script> 
+    <script src="../js/plugins-init/datatables.init.js"></script>
+    <!-- <script src="./js/sc.js"></script>-->
+
+    <script>
+          function toggleAccountDiv() {
+            const typeSelect = document.getElementById('newtype');
+            const accountDiv = document.getElementById('accountdivadd'); // Corrected ID
+
+            if (typeSelect.value === 'non-bsp') {
+                accountDiv.style.display = 'block'; // Show the accountdivadd
+            } else {
+                accountDiv.style.display = 'none'; // Hide the accountdivadd
+            }
+        }
+      
+        function addingpanel(){
+            var panel = document.getElementById('addingPanel');
+            var overlay = document.getElementById('overlay');
+            
+
+            // Toggle the panel
+            panel.style.right =  '0px'; // Slide in or out
+            overlay.style.display = 'block';
+            overlay.style.opacity = 0; // Start with 0 opacity
+                setTimeout(function () {
+                    overlay.style.opacity = 1; // Fade in
+                }, 10); 
+        }
+        function ClosePanel(){
+            var panel = document.getElementById('updatingPanel');
+            var panel2 = document.getElementById('addingPanel');
+            var overlay = document.getElementById('overlay');
+            panel.style.right = '-100%';
+            panel2.style.right = '-100%';
+            overlay.style.display = 'none';
+
+        }
+
+        function toggleAddPanel() {
+            var panel = document.getElementById('updatingPanel');
+            var overlay = document.getElementById('overlay');
+            
+
+            // Toggle the panel
+            panel.style.right =  '0px'; // Slide in or out
+            overlay.style.display = 'block';
+            overlay.style.opacity = 0; // Start with 0 opacity
+                setTimeout(function () {
+                    overlay.style.opacity = 1; // Fade in
+                }, 10); 
+            
+        }
+//    var panel = document.getElementById("staticBackdrop");
+var editbtn12 = document.getElementsByClassName("update");
+var editbtn11 = document.getElementsByClassName("view");
+
+var code = document.getElementById("code");
+var password = document.getElementById("password");
+var email = document.getElementById("email");
+var sname = document.getElementById("sname");
+var authority = document.getElementById("authority");
+var region = document.getElementById("region");
+var status = document.getElementById("status");
+
+
+for (var i = 0; i < editbtn11.length; i++) {
+  editbtn11[i].onclick = function () {
+    var datapass = this.getAttribute("data-pass");
+    alert(datapass);
+  };
+}
+
+for (var i = 0; i < editbtn12.length; i++) {
+  editbtn12[i].onclick = function () {
+    // Use Bootstrap's modal method to show the modal
+    // $('#staticBackdrop').modal('show');
+    toggleAddPanel();
+    var datacode = this.getAttribute("data-code");
+    var dataname = this.getAttribute("data-name");
+    var dataauthority = this.getAttribute("data-authority");
+    var dataregion = this.getAttribute("data-region");
+    var datastatus = this.getAttribute("data-status");
+    var dataemail = this.getAttribute("data-email");
+    var datapass = this.getAttribute("data-pass");
+    // console.log(dataname);
+
+    code.value = datacode;
+    sname.value = dataname;
+    password.value = datapass;
+    email.value= dataemail;
+    password.value = datapass;
+
+ 
+  //  console.log(dataauthority);
+   // console.log(datastatus);
+    //console.log(dataregion);
+   // console.log(datapass);
+    // Loop through the options and select the one with the matching value
+    for (let j = 0; j < authority.options.length; j++) {
+        if (authority.options[j].value === dataauthority) {
+            authority.selectedIndex = j;
+            break; // Exit the loop after finding the matching option
+        }
+    }
+    for (let j = 0; j < region.options.length; j++) {
+        if (region.options[j].value === dataregion) {
+            region.selectedIndex = j;
+            break; // Exit the loop after finding the matching option
+        }
+    }
+    for (let j = 0; j < status.options.length; j++) {
+        if (status.options[j].value === datastatus) {
+            status.selectedIndex = j;
+            break; // Exit the loop after finding the matching option
+        }
+    }
+   
+  };
+}
+
+      </script>
+
+    
+</body>
+</html>

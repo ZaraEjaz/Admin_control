@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mortha"> -->
+    <!-- <link href="./vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet"> -->
+    <!-- <link href="./vendor/chartist/css/chartist.min.css" rel="stylesheet"> -->
+    <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5916181059.js" crossorigin="anonymous"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <style>
+        body {
+            color: black;
+        }
+        .card-head {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+        .form-group {
+            margin-bottom: 0;
+        }
+        .btn-theme {
+            margin-left: 10px;
+        }
+        .note-card {
+            margin-top: 20px;
+            position: relative;
+        }
+        .action-icons {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        .note-card:hover .action-icons {
+            display: inline-block;
+        }
+        .notification {
+            display: none;
+            position: fixed;
+            top: 50px;
+            right: 30px;
+            padding: 10px;
+            background-color: #2885a7;
+            color: white;
+            border-radius: 5px;
+            width:30%;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .notification.delete {
+            background-color: #dc3545;
+        }
+        .notification.show {
+            display: block;
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+        <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div id="main-wrapper">
+            <div class="content-body">
+                <div class="container-fluid">
+                    <div class="row special-page-titles page-titles mx-0">
+                        <div class="col-sm-6 p-md-0">
+                            <div class="welcome-text">
+                                <h4 class="text-white">T.R.A.V.E.L Notes</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-head">
+                                    <div class="form-group mb-0 mr-2">
+                                        <select class="form-control" id="dropdownMenu" style="width: auto; display: inline-block;">
+                                            <option value="private">Private</option>
+                                            <option value="public">Public</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-theme btn-theme" onclick="addingpanel()">Create New</button>
+                                </div>
+                                <div class="card-body note-container">
+                                    <!-- Notes will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Notification Div -->
+        <div class="notification" id="notification">Note has been saved!</div>
+       
+        
+        <!--**********************************
+            Content body end
+        ***********************************-->
+ 
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        
+
+        <!--**********************************
+            Footer end
+
+
+    </div>
+  
+        Main wrapper end
+    ***********************************-->
+    <script>
+        function addingpanel() {
+            const type = document.getElementById('dropdownMenu').value;
+            const noteCard = document.createElement('div');
+            noteCard.className = 'card note-card';
+            noteCard.innerHTML = `
+                <div class="card-header">
+                    <h5 class="card-title">${type.charAt(0).toUpperCase() + type.slice(1)} Note</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <input type="text" class="form-control" placeholder="Note Title">
+                            <div class="action-icons">
+                                <i class="fas fa-edit edit-icon" onclick="editNote(this)"></i>
+                                <i class="fas fa-trash delete-icon ml-2" onclick="deleteNote(this)"></i>
+                            </div>
+                        </div>
+                        <textarea class="form-control mt-3" rows="5" placeholder="Write your note here..."></textarea>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-theme save-button" onclick="saveNote(this)">Save</button>
+                </div>
+            `;
+            document.querySelector('.note-container').appendChild(noteCard);
+        }
+
+        function saveNote(button) {
+            const noteCard = button.closest('.note-card');
+            noteCard.querySelector('.d-flex input').readOnly = true;
+            noteCard.querySelector('.card-body textarea').readOnly = true;
+            button.style.display = 'none';
+
+            // Show notification
+            showNotification('Note has been saved!');
+        }
+
+        function editNote(icon) {
+            const noteCard = icon.closest('.note-card');
+            noteCard.querySelector('.d-flex input').readOnly = false;
+            noteCard.querySelector('.card-body textarea').readOnly = false;
+            noteCard.querySelector('.save-button').style.display = 'inline-block';
+        }
+
+        function deleteNote(icon) {
+            const noteCard = icon.closest('.note-card');
+            noteCard.remove();
+            // Show delete notification
+            showNotification('Note has been deleted!', 'delete');
+        }
+
+        function showNotification(message, type = 'save') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);  // Slight delay to allow the display property to take effect
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 500);  // Match this duration with the CSS transition duration
+            }, 3000);  // Display duration of the notification
+        }
+    </script>
+
+    <script src="../vendor/global/global.min.js"></script>
+    <script src="../js/quixnav-init.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+    <!-- <script src="./vendor/chartist/js/chartist.min.js"></script> -->
+
+    <script src="../vendor/moment/moment.min.js"></script>
+    <!-- <script src="./vendor/pg-calendar/js/pignose.calendar.min.js"></script> -->
+
+    <script src="../sc.js"></script>
+    <script src="../js/dashboard/dashboard-2.js"></script>
+    <!-- Datatable -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script> 
+    <script src="../js/plugins-init/datatables.init.js"></script>
+    <!-- <script src="./js/sc.js"></script>-->
+
+
+    
+</body>
+</html>

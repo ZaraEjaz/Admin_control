@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mortha"> -->
+    <!-- <link href="./vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet"> -->
+    <!-- <link href="./vendor/chartist/css/chartist.min.css" rel="stylesheet"> -->
+    <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5916181059.js" crossorigin="anonymous"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <script>
+       
+    </script>
+    <style>
+        body{
+            color:black;
+        }
+       
+       
+       #icon{
+        font-size: 20px;
+        margin: 0 auto;
+        transition: transform 0.5s ease;
+       }
+       #icon:hover{
+        color:black;
+        transform: scale(1.2);
+       }
+       .toggle-button {
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            border-radius: 25px;
+            background-color: #ccc;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:before {
+            content: '';
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: left 0.3s;
+        }
+
+        .toggle-button.active {
+            background-color: #0f3554;
+        }
+
+        .toggle-button.active:before {
+            left: 26px;
+        }
+       .thead{
+        background-color: #4e8aba!important;
+        color: white;
+       }
+       tbody{
+        color:black;
+       }
+       .btn-group .btn {
+            margin-right: 5px; /* Adjust the spacing here */
+        }
+       @media (max-width: 768px) {
+    /* Styles for smartphones (portrait) */
+    .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(129, 54, 54, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: scroll;
+        }
+        }
+    </style>
+</head>
+<body>
+        <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row special-page-titles page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4 class="text-white">VAT</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                        <form action="#" class="d-flex align-items-center w-100">
+                            <div class="col-md-3">
+                                <label for="selectedRows" class="form-label">Selected Rows: 0</label>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="totalPrice" class="form-label">Total Price: 0.00</label>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <input type="checkbox" id="selectAll" class="mr-2">
+                                <label for="selectAll" class="form-label mb-0">Select All</label>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-theme">Exit</button>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:auto;">
+                        <div class="col-12">
+                            <div class="card">
+                                
+                                <div class="card-body">
+                                    <div class="row mb-3 align-items-center">
+                                        <div class="col-sm-9">
+                                            <div class="btn-group" aria-label="Table Actions">
+                                                <button id="copyBtn" class="btn btn-theme">Copy</button>
+                                                <button id="csvBtn" class="btn btn-theme">CSV</button>
+                                                <button id="excelBtn" class="btn btn-theme">Excel</button>
+                                                <button id="pdfBtn" class="btn btn-theme">PDF</button>
+                                                <button id="printBtn" class="btn btn-theme">Print</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 text-right">
+                                            <button id="Send" class="btn btn-theme">Send Selected to ZATCA</button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="example" class="display" style="min-width: 845px">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Document Number</th>
+                                                    <th>Description</th>
+                                                    <th>Item</th>
+                                                    <th>Country Type</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Service Fee</th>
+                                                    <th>Customer</th>
+                                                    <th>Status</th>
+                                                    <th>Select</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>2024/01/01</td>
+                                                    <td>12345</td>
+                                                    <td>Sample Description 1</td>
+                                                    <td>Item 1</td>
+                                                    <td>Type A</td>
+                                                    <td>$10.00</td>
+                                                    <td>$2.00</td>
+                                                    <td>Customer 1</td>
+                                                    <td><button class="btn btn-success">Approved</button></td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2024/02/15</td>
+                                                    <td>67890</td>
+                                                    <td>Sample Description 2</td>
+                                                    <td>Item 2</td>
+                                                    <td>Type B</td>
+                                                    <td>$20.00</td>
+                                                    <td>$3.00</td>
+                                                    <td>Customer 2</td>
+                                                    <td><button class="btn btn-success">Approved</button></td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!--**********************************
+            Content body end
+        ***********************************-->
+ 
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        
+
+        <!--**********************************
+            Footer end
+
+
+    </div>
+  
+        Main wrapper end
+    ***********************************-->
+
+
+       
+
+
+        
+    <script src="../vendor/global/global.min.js"></script>
+    <script src="../js/quixnav-init.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+    <!-- <script src="./vendor/chartist/js/chartist.min.js"></script> -->
+
+    <script src="../vendor/moment/moment.min.js"></script>
+    <!-- <script src="./vendor/pg-calendar/js/pignose.calendar.min.js"></script> -->
+
+    <script src="../sc.js"></script>
+    <script src="../js/dashboard/dashboard-2.js"></script>
+    <!-- Datatable -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script> 
+    <script src="../js/plugins-init/datatables.init.js"></script>
+    <!-- <script src="./js/sc.js"></script>-->
+
+
+    
+</body>
+</html>

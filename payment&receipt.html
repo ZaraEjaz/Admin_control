@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mortha"> -->
+    <!-- <link href="./vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet"> -->
+    <!-- <link href="./vendor/chartist/css/chartist.min.css" rel="stylesheet"> -->
+    <link href="../vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5916181059.js" crossorigin="anonymous"></script>
+    <link href="../css/style.css" rel="stylesheet">
+    <script>
+       
+    </script>
+    <style>
+        body{
+            color:black;
+        }
+       /* Important CSS for the slide-out panels */
+       .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -800px; /* Start hidden */
+            width: 50%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 999;
+            padding: 20px;
+            overflow-y: auto;
+}
+
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header .close-btn {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+
+
+       .bg-theme{
+        background-image: linear-gradient(145deg, rgba(254, 254, 254, 0.05) 0%, rgba(254, 254, 254, 0.05) 69%,rgba(160, 160, 160, 0.05) 69%, rgba(160, 160, 160, 0.05) 100%),linear-gradient(283deg, rgba(102, 102, 102, 0.02) 0%, rgba(102, 102, 102, 0.02) 60%,rgba(67, 67, 67, 0.02) 60%, rgba(67, 67, 67, 0.02) 100%),linear-gradient(165deg, rgba(169, 169, 169, 0.06) 0%, rgba(169, 169, 169, 0.06) 89%,rgba(189, 189, 189, 0.06) 89%, rgba(189, 189, 189, 0.06) 100%),linear-gradient(415deg, rgba(213, 213, 213, 0.04) 0%, rgba(213, 213, 213, 0.04) 45%,rgba(66, 66, 66, 0.04) 45%, rgba(66, 66, 66, 0.04) 100%),linear-gradient(272deg, rgba(223, 223, 223, 0.01) 0%, rgba(223, 223, 223, 0.01) 82%,rgba(28, 28, 28, 0.01) 82%, rgba(28, 28, 28, 0.01) 100%),linear-gradient(92deg, rgba(20, 20, 20, 0.06) 0%, rgba(20, 20, 20, 0.06) 62%,rgba(136, 136, 136, 0.06) 62%, rgba(136, 136, 136, 0.06) 100%),linear-gradient(289deg, rgba(206, 206, 206, 0.09) 0%, rgba(206, 206, 206, 0.09) 58%,rgba(6, 6, 6, 0.09) 58%, rgba(6, 6, 6, 0.09) 100%),linear-gradient(393deg, rgba(162, 162, 162, 0.07) 0%, rgba(162, 162, 162, 0.07) 27%,rgba(24, 24, 24, 0.07) 27%, rgba(24, 24, 24, 0.07) 100%),linear-gradient(275deg, rgba(166, 166, 166, 0.04) 0%, rgba(166, 166, 166, 0.04) 5%,rgba(210, 210, 210, 0.04) 5%, rgba(210, 210, 210, 0.04) 100%),linear-gradient(179deg, rgb(26,60,118),rgb(32,129,207),rgb(7,128,191));
+
+       }
+       #icon{
+        font-size: 20px;
+        margin: 0 auto;
+        transition: transform 0.5s ease;
+       }
+       #icon:hover{
+        color:black;
+        transform: scale(1.2);
+       }
+       .toggle-button {
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            border-radius: 25px;
+            background-color: #ccc;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:before {
+            content: '';
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: left 0.3s;
+        }
+
+        .toggle-button.active {
+            background-color: #0f3554;
+        }
+
+        .toggle-button.active:before {
+            left: 26px;
+        }
+       .thead{
+        background-color: #4e8aba!important;
+        color: white;
+       }
+       tbody{
+        color:black;
+       }
+       .btn-upload {
+    background-color: #143e60;
+    color: #fff;
+    
+}
+
+       @media (max-width: 768px) {
+    /* Styles for smartphones (portrait) */
+    .slide-out-panel {
+            border-radius: 20px ;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            box-shadow: -2px 0 5px rgba(129, 54, 54, 0.1);
+            transition: right 0.6s ease-in-out;
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: scroll;
+        }
+        }
+    </style>
+</head>
+<body>
+        <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+       
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+        
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row special-page-titles page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4 class="text-white">Payment/Receipt Generation & Reversal</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                    <div class="profile-email">
+                        <h4 class="text-muted">Generation</h4>
+                    </div>
+                </div>
+                <div class="row special-page-titles page-titles mx-0">
+                        <div class="col text-center">
+                            <button class="btn btn-theme mx-5" onclick="openPanel('receiptPanel')">Receipts</button>
+                            <button class="btn btn-theme mx-5" onclick="openPanel('paymentPanel')">Payments</button>
+                            <button class="btn btn-theme mx-5" onclick="openPanel('adjustmentPanel')">Adjustments</button>
+                        </div>
+                </div>
+                <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                    <div class="profile-email">
+                        <h4 class="text-muted">Reversal</h4>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:auto;">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-head p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <form action="" class="d-flex align-items-center">
+                                        <label for="search" class="mr-2">Voucher Number</label>
+                                        <input type="search" id="search" name="search" class="form-control mr-2" style="width: 200px;">
+                                        <button class="btn btn-theme mx-2" onclick=" ">Search</button>
+                                    </form>
+                                    <button class="btn btn-theme" onclick=" ">Reverse</button>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead class="thead">
+                                                            <tr>
+                                                                <th scope="col">SNO.</th>
+                                                                <th scope="col">Date</th>
+                                                                <th scope="col">Document Number</th>
+                                                                <th scope="col">Account Head</th>
+                                                                <th scope="col">Remarks</th>
+                                                                <th scope="col">Naration</th>
+                                                                <th scope="col">Credit</th>
+                                                                <th scope="col">Debit</th>
+                                                                <th scope="col">Feeder</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>12/12/2024</td>
+                                                                <td>5758</td>
+                                                                <td>123</td>
+                                                                <td>abc</td>
+                                                                <td>abc</td>
+                                                                <td>abc</td>
+                                                                <td>abc</td>
+                                                                <td>abc</td>
+                                                                
+                                                                
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                        <div class="form-group row mt-5">
+                                    <div class="col-lg-12 text-center">
+                                        <button type="submit" class="btn btn-theme">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+                </div>
+                
+            </div>
+        </div>
+<!-- Panels -->
+ <!-- Content for receipt panel -->
+<div id="overlay" onclick="closePanel()"></div>
+
+<div id="receiptPanel" class="slide-out-panel">
+    <div class="panel-header">
+        <div class="slide-out-panel-header">
+            <i class="fa-solid fa-xmark " id="icon" onclick="closePanel()" style="margin-bottom: 10px"></i>
+        </div>
+    </div>
+    <h4 class="card-title">Receipt</h4>
+        <div class="col-lg-12">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <!-- Date -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Date</label>
+                                <div class="col-lg-8">
+                                    <input type="date" class="form-control" name="date">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Credit Account -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Credit Account</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="credit_account">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <!-- Debit Account -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Debit Account</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="debit_account">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Credit Amount -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Credit Amount</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control" name="Credit_Amount">
+                                    <option>Select</option>
+                                    <option value="A00136-Zafar Khan">A00136-Zafar Khan</option>
+                                    <option value="A00220-khalid siddique">A00220-khalid siddique</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <!-- Debit Amount -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Debit Amount</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="debit_amount">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cheque Number -->
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Cheque Number</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="cheque_number">
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Narration -->
+                    <div class="form-group row">
+                       
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <label class="col-lg-4 col-form-label">Narration</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control" name="narration"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                       
+                        <div class="form-group row mt-5">
+                            <div class="col-lg-12 text-center">
+                                <button type="submit" class="btn btn-theme">Save</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+<!-- Content for payment panel -->
+<div id="paymentPanel" class="slide-out-panel">
+    <div class="panel-header">
+        <div class="slide-out-panel-header">
+            <i class="fa-solid fa-xmark " id="icon" onclick="closePanel()" style="margin-bottom: 10px"></i>
+        </div>
+    </div>
+    <h4 class="card-title">Payment</h4>
+    <div class="col-lg-12">
+        <div class="card-body">
+            <div class="form-group row">
+                <!-- Date -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Date</label>
+                        <div class="col-lg-8">
+                            <input type="date" class="form-control" name="date">
+                        </div>
+                    </div>
+                </div>
+                <!-- Branch -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Branch</label>
+                        <div class="col-lg-8">
+                            <select class="form-control" name="vat_type">
+                                <option>Select</option>
+                                <option value="Makkah">Makkah</option>
+                                <option value="Madina">Madina</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <!-- Narration-->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Narration</label>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" name="narration"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--Voucher -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Voucher</label>
+                        <div class="col-lg-8">
+                            <select class="form-control" name="Voucher">
+                                <option>Select</option>
+                                <option value="Makkah">Cash Payment Voucher</option>
+                                <option value="Madina">Bank Payment Voucher</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <!-- File -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">File</label>
+                        <div class="col-lg-8">
+                            <button type="button" class="btn btn-rounded btn-upload">
+                                <span class="btn-icon-left text-success">
+                                    <i class="fa fa-upload color-success"></i>
+                                </span>Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive mt-5">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-theme" onclick="addRow('paymentTableBody')">Add Row</button>
+                </div>
+                <table class="table">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col">SNO.</th>
+                            <th scope="col">Credit</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Branch</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentTableBody">
+                        <tr>
+                            <td>1</td>
+                            <td>123</td>
+                            <td>123</td>
+                            <td>abc</td>
+                            <td>5758</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group row mt-5">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Total Credit:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="totalCredit" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Total Debit:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="totalDebit" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Difference:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="difference" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mt-5">
+                <div class="col-lg-12 text-center">
+                    <button type="submit" class="btn btn-theme">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Content for adjustment panel -->
+<div id="adjustmentPanel" class="slide-out-panel">
+    <div class="panel-header">
+        <div class="slide-out-panel-header">
+            <i class="fa-solid fa-xmark " id="icon" onclick="closePanel()" style="margin-bottom: 10px"></i>
+        </div>
+    </div>
+    <h4 class="card-title">Adjustments</h4>
+    <div class="col-lg-12">
+        <div class="card-body">
+            <div class="form-group row">
+                <!-- Date -->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Date</label>
+                        <div class="col-lg-8">
+                            <input type="date" class="form-control" name="date">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <!-- Narration-->
+                <div class="col-lg-6">
+                    <div class="row">
+                        <label class="col-lg-4 col-form-label">Narration</label>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" name="narration"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive mt-5">
+                <div class="d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-theme" onclick="addRow('adjustmentTableBody')">Add Row</button>
+                </div>
+                <table class="table">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col">SNO.</th>
+                            <th scope="col">Credit</th>
+                            <th scope="col">Debit</th>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Branch</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adjustmentTableBody">
+                        <tr>
+                            <td>1</td>
+                            <td>123</td>
+                            <td>123</td>
+                            <td>abc</td>
+                            <td>5758</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group row mt-5">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Total Credit:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="totalCredit" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Total Debit:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="totalDebit" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <label class="col-lg-6 col-form-label">Difference:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="difference" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row mt-5">
+                <div class="col-lg-12 text-center">
+                    <button type="submit" class="btn btn-theme">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+        
+        <script>
+             function addRow(tableBodyId) {
+    var tableBody = document.getElementById(tableBodyId);
+    var rowCount = tableBody.rows.length;
+    var row = tableBody.insertRow(rowCount);
+
+    // Create cells
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+
+    // Insert data
+    cell1.innerHTML = rowCount + 1;
+    cell2.innerHTML = '<input type="text" class="form-control" placeholder="Credit">';
+    cell3.innerHTML = '<input type="text" class="form-control" placeholder="Debit">';
+    cell4.innerHTML = '<input type="text" class="form-control" placeholder="Reference">';
+    cell5.innerHTML = '<input type="text" class="form-control" placeholder="Branch">';
+}
+
+
+            document.querySelector('#selectAll').addEventListener('change', function(e) {
+                const checkboxes = document.querySelectorAll('.row-checkbox');
+                checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
+            });
+        </script>
+        <script>
+            function toggleActive(element) {
+                element.classList.toggle('active');
+            }
+            function openPanel(panelId) {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById(panelId).style.right = '0';
+}
+
+function closePanel() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('receiptPanel').style.right = '-100%';
+    document.getElementById('paymentPanel').style.right = '-100%';
+    document.getElementById('adjustmentPanel').style.right = '-100%';
+}
+
+// Attach the openPanel function to the buttons
+document.querySelector('.btn-theme[onclick="openPanel(\'receiptPanel\')"]').addEventListener('click', function() {
+    openPanel('receiptPanel');
+});
+
+document.querySelector('.btn-theme[onclick="openPanel(\'paymentPanel\')"]').addEventListener('click', function() {
+    openPanel('paymentPanel');
+});
+
+document.querySelector('.btn-theme[onclick="openPanel(\'adjustmentPanel\')"]').addEventListener('click', function() {
+    openPanel('adjustmentPanel');
+});
+
+        </script>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+ 
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        
+
+        <!--**********************************
+            Footer end
+
+
+    </div>
+  
+        Main wrapper end
+    ***********************************-->
+
+
+       
+
+
+        
+    <script src="../vendor/global/global.min.js"></script>
+    <script src="../js/quixnav-init.js"></script>
+    <script src="../js/custom.min.js"></script>
+
+    <!-- <script src="./vendor/chartist/js/chartist.min.js"></script> -->
+
+    <script src="../vendor/moment/moment.min.js"></script>
+    <!-- <script src="./vendor/pg-calendar/js/pignose.calendar.min.js"></script> -->
+
+    <script src="../sc.js"></script>
+    <script src="../js/dashboard/dashboard-2.js"></script>
+    <!-- Datatable -->
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script> 
+    <script src="../js/plugins-init/datatables.init.js"></script>
+    <!-- <script src="./js/sc.js"></script>-->
+
+
+    
+</body>
+</html>

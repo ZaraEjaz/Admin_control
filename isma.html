@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-Patient Billing Information</title>
+    <link rel="stylesheet" href="taskstyle.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .header {
+            background-color: #4A90E2;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            margin-left: 0%;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .header .left {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: black;
+        }
+
+        .header .right {
+            position: absolute;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: black;
+        }
+
+        .billing-info {
+            width: 100%;
+            max-width: 90%;
+            margin: 5px auto;
+            background-color: #337ab7;
+            padding: 10px;
+            border-radius: 3px;
+            color: #fff;
+        }
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .d-flex {
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="">
+        <div class="header text-center mb-4">
+            <div class="row">
+                <div class="col-3 text-left">
+                    <span>Last Updated by: sunhair</span>
+                </div>
+                <div class="col-6">
+                    <h1>In-Patient Billing Information</h1>
+                </div>
+                <div class="col-3 text-right">
+                    <span>Discharged by: sunhair</span>
+                </div>
+            </div>
+        </div>
+        <div class="container billing-info">
+            <div class="row">
+                <div class="col-md-1">
+                    <label for="billNo">Bill No.</label>
+                    <input type="text" id="billNo" class="form-control" value="22215">
+                </div>
+                <div class="col-md-2">
+                    <label for="regNo">Reg. No.</label>
+                    <div class="d-flex">
+                        <input type="text" id="regNo" class="form-control mr-2" value="C" style="width: 40px;">
+                        <span> -</span>
+                        <input type="text" class="form-control ml-1" value="2000" style="width: 80px;">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label for="billingDate">Billing Date</label>
+                    <input type="date" id="billingDate" class="form-control" value="2018-01-01">
+                </div>
+                <div class="col-md-2">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" class="form-control" value="18:55:27">
+                </div>
+                <div class="col-md-2">
+                    <label for="patientName">Patient Name</label>
+                    <input type="text" id="patientName" class="form-control" value="MRS. ANILA">
+                </div>
+                <div class="col-md-1">
+                    <label for="room">Room</label>
+                    <input type="text" id="room" class="form-control" value="FGW-02">
+                </div>
+                <div class="col-md-1">
+                    <label for="gender">Gender</label>
+                    <input type="text" id="gender" class="form-control" value="Female">
+                </div>
+                <div class="col-md-1">
+                    <label for="age">Age</label>
+                    <input type="text" id="age" class="form-control" value="29 Y">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label for="admDate">Adm. Date</label>
+                    <input type="date" id="admDate" class="form-control" value="2018-01-01">
+                </div>
+                <div class="col-md-2">
+                    <label for="admTime">Adm. Time</label>
+                    <input type="time" id="admTime" class="form-control" value="18:03">
+                </div>
+            
+           
+                <div class="col-md-2">
+                    <label for="consultant">Consultant</label>
+                    <input type="text" id="consultant" class="form-control" value="RMO">
+                </div>
+                <div class="col-md-2">
+                    <label for="accountType">Account Type</label>
+                    <input type="text" id="accountType" class="form-control" value="PUBLIC">
+                </div>
+                <div class="col-md-4">
+                    <label for="admissionRemarks">Admission Remarks</label>
+                    <input type="text" id="admissionRemarks" class="form-control">
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
